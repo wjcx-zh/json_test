@@ -14,6 +14,7 @@ import com.wjcx.json.convert.DateJsonValueProcessor;
 import com.wjcx.json.model.Grade;
 import com.wjcx.json.model.Student;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import net.sf.json.JsonConfig;
@@ -112,5 +113,28 @@ public class JSONTest {
 		config.registerJsonValueProcessor(Date.class, dateValue);
 
 		System.out.println(JSONObject.fromObject(student, config));
+	}
+	
+	@Test  
+	public void test4(){
+		//JSONObject可以自定义对象，JSONArray可以自定义数组
+		JSONObject obj1=new JSONObject();
+		obj1.put("id",101);
+		obj1.put("name", "Kazaf");
+		JSONObject obj2=new JSONObject();
+		obj2.put("id",102);
+		obj2.put("name", "Helen");
+		JSONArray array=new JSONArray();
+		array.add(obj1);
+		array.add(obj2);
+		JSONObject obj3=new JSONObject();
+		obj3.put("arr", array);
+		System.out.println(obj3.toString());
+		JSONArray arr=new JSONArray();
+		arr.add(1);
+		arr.add("wjcx");
+		int[] a=new int[]{0,1};
+		arr.add(a);
+		System.out.println(arr.toString());
 	}
 }
