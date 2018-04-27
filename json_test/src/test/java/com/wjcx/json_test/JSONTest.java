@@ -15,6 +15,8 @@ import com.wjcx.json.model.Student;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
+import net.sf.json.JsonConfig;
+import net.sf.json.util.CycleDetectionStrategy;
 
 public class JSONTest {
 	private static Grade grade;
@@ -69,5 +71,31 @@ public class JSONTest {
 		obj.put("name", stu1.getName());
 		System.out.println(JSONSerializer.toJSON(stu1));
 		System.out.println(obj.toString());
+	}
+	
+	@Test  //解决自关联问题
+	public void test2(){
+		student.setDate(new Date());
+		student.setName("Ziv");
+		/*
+		 *循环关联自身，进入循环无法转换
+		System.out.println(JSONSerializer.toJSON(student));
+		*/
+		//解决:通过jsonConfig来过滤相应的参数,例如密码
+		JsonConfig config=new JsonConfig();
+		/*
+		config.setExcludes(new String[]{"student","date"});  //设置需要排除哪些字段
+		System.out.println(JSONObject.fromObject(student, config));
+		*/
+		config.setExcludes(new String[]{"date"});
+		//设置字段的自关联过滤:
+		//STRICT:缺省，无论是否自关联，都要转换
+		//LENIENT:如果自关联，设置为null
+		//NOPROP:如果自关联，忽略属性
+		
+		config.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
+		//config.setCycleDetectionStrategy(CycleDetectionStrategy.STRICT);
+		//config.setCycleDetectionStrategy(CycleDetectionStrategy.NOPROP);
+		System.out.println(JSONObject.fromObject(student, config));
 	}
 }

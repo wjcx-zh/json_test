@@ -11,6 +11,16 @@ public class Student {
 	//解决方案1：去掉getter和setter的static
 	//
 	private static int age;
+	
+	//自关联
+	private Student student=this;
+	
+	public Student getStudent() {
+		return student;
+	}
+	public void setStudent(Student student) {
+		this.student = student;
+	}
 	public /*static*/static int getAge() {
 		return age;
 	}
@@ -33,5 +43,6 @@ public class Student {
 	public String toString() {
 		return "Student [name=" + name + ", date=" + date + "]";
 	}
+	
 	
 }
