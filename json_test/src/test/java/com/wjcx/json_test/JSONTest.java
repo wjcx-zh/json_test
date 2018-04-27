@@ -10,6 +10,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.wjcx.json.convert.DateJsonValueProcessor;
 import com.wjcx.json.model.Grade;
 import com.wjcx.json.model.Student;
 
@@ -96,6 +97,20 @@ public class JSONTest {
 		config.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
 		//config.setCycleDetectionStrategy(CycleDetectionStrategy.STRICT);
 		//config.setCycleDetectionStrategy(CycleDetectionStrategy.NOPROP);
+		System.out.println(JSONObject.fromObject(student, config));
+	}
+	@Test  //自定义日期处理类，格式化日期数据
+	public void test3(){
+		student.setDate(new Date());
+		student.setName("Ziv");
+		
+		JsonConfig config=new JsonConfig();
+		
+		config.setExcludes(new String[]{"student"});  //设置需要排除哪些字段
+		//指定某个json类型的处理方式
+		DateJsonValueProcessor dateValue=new DateJsonValueProcessor();
+		config.registerJsonValueProcessor(Date.class, dateValue);
+
 		System.out.println(JSONObject.fromObject(student, config));
 	}
 }
